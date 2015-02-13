@@ -42,6 +42,8 @@ sub register {
             my $token_short_name = 'tokens';
             my $app_namespace = 'Mojolicious::Plugin::OAuth::Applications';
             my $app_short_name = 'applications';
+            my $authapp_namespace = 'Mojolicious::Plugin::OAuth::AuthorizedApplications';
+            my $authapp_short_name = 'authorized_applications';
 
             $routes->get('/oauth/authorize/:code')->to(action => 'show', namespace => $auth_namespace)->name("${auth_short_name}::show");
             $routes->get('/oauth/authorize')->to(action => 'new', namespace => $auth_namespace)->name("${auth_short_name}::new");
@@ -52,13 +54,20 @@ sub register {
 
             $routes->post('/oauth/token')->to(action => 'create', namespace => $token_namespace)->name("${token_short_name}::create");
             $routes->post('/oauth/revoke')->to(action => 'revoke', namespace => $token_namespace)->name("${token_short_name}::revoke");
+            $routes->get('/oauth/token/info')->to(action => 'show', namespace => $token_namespace)->name("${token_short_name}::show");
 
-# resources /oauth/applications
-# GET       /oauth/authorized_applications
-# DELETE    /oauth/authorized_applications/:id
-# GET       /oauth/token/info
-#            $routes->route('/oauth/token/info')->via('GET')->to( controller => 'Dude', action => 'action' )->name("${short_name}::show");
-# 
+            $routes->get('/oauth/applications')->to(action => 'show', namespace => $app_namespace)->name("${app_short_name}::index");
+            $routes->post('/oauth/applications')->to(action => 'show', namespace => $app_namespace)->name("${app_short_name}::create");
+            $routes->get('/oauth/applications/new')->to(action => 'show', namespace => $app_namespace)->name("${app_short_name}::new");
+            $routes->get('/oauth/applications/:id/edit')->to(action => 'show', namespace => $app_namespace)->name("${app_short_name}::edit");
+            $routes->get('/oauth/applications/:id')->to(action => 'show', namespace => $app_namespace)->name("${app_short_name}::show");
+            $routes->patch('/oauth/applications/:id')->to(action => 'show', namespace => $app_namespace)->name("${app_short_name}::update");
+            $routes->put('/oauth/applications/:id')->to(action => 'show', namespace => $app_namespace)->name("${app_short_name}::update");
+            $routes->delete('/oauth/applications/:id')->to(action => 'show', namespace => $app_namespace)->name("${app_short_name}::destroy");
+
+            $routes->get('/oauth/authorized_applications')->to(action => 'index', namespace => $authapp_namespace)->name("${authapp_short_name}::index");
+            $routes->delete('/oauth/authorized_applications/:id')->to(action => 'destroy', namespace => $authapp_namespace)->name("${authapp_short_name}::destroy");
+
             return;
 
         }
